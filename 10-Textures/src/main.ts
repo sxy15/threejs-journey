@@ -14,13 +14,37 @@ const scene = new THREE.Scene()
 // image.src = new URL('./assets/Door_Wood_001_basecolor.jpg', import.meta.url).href
 
 // 2. 使用 textureLoader 加载图片
-const textureLoader = new THREE.TextureLoader()
-const texture = textureLoader.load(new URL('./assets/Door_Wood_001_basecolor.jpg', import.meta.url).href, () => {
-  console.log('texture loaded')
-})
+const loadManager = new THREE.LoadingManager()
+loadManager.onStart = () => {
+  console.log('texture loading start')
+}
+loadManager.onLoad = () => {
+  console.log('all textures loaded')
+}
+loadManager.onProgress = () => {
+  console.log('texture loading progress')
+}
+loadManager.onError = () => {
+  console.log('texture loading error')
+}
+const textureLoader = new THREE.TextureLoader(loadManager)
+const baseColorTexture = textureLoader.load(new URL('./assets/Door_Wood_001_basecolor.jpg', import.meta.url).href)
+const roughnessTexture = textureLoader.load(new URL('./assets/Door_Wood_001_roughness.jpg', import.meta.url).href)
+const normalTexture = textureLoader.load(new URL('./assets/Door_Wood_001_normal.jpg', import.meta.url).href)
+const heightTexture = textureLoader.load(new URL('./assets/Door_Wood_001_height.png', import.meta.url).href)
+const ambientOcclusionTexture = textureLoader.load(new URL('./assets/Door_Wood_001_ambientOcclusion.jpg', import.meta.url).href)
+const metallicTexture = textureLoader.load(new URL('./assets/Door_Wood_001_metallic.jpg', import.meta.url).href)
+const opacityTexture = textureLoader.load(new URL('./assets/Door_Wood_001_opacity.jpg', import.meta.url).href)
+
+baseColorTexture.repeat.x = 2
+baseColorTexture.repeat.y = 3
+baseColorTexture.wrapS = THREE.RepeatWrapping
+baseColorTexture.wrapT = THREE.RepeatWrapping
+baseColorTexture.offset.x = 0.5
+baseColorTexture.offset.y = 0.5
 
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ map: texture })
+const material = new THREE.MeshBasicMaterial({ map: baseColorTexture })
 const mesh = new THREE.Mesh(geometry, material)
 
 scene.add(mesh)
