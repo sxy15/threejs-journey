@@ -158,9 +158,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 1
-camera.position.y = 1
-camera.position.z = 2
+camera.position.x = 0
+camera.position.y = 0
+camera.position.z = 5
 scene.add(camera)
 
 // Controls
@@ -185,6 +185,16 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    // update sphere position
+    sphere.position.x = Math.cos(elapsedTime) * 1.5
+    sphere.position.z = Math.sin(elapsedTime) * 1.5
+    sphere.position.y = Math.abs(Math.sin(elapsedTime * 3))
+
+    // update sphere shadow position
+    sphereShadow.position.x = sphere.position.x
+    sphereShadow.position.z = sphere.position.z
+    sphereShadow.material.opacity = (1 - Math.abs(sphere.position.y)) * 0.5
 
     // Update controls
     controls.update()
