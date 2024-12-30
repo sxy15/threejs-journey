@@ -38,18 +38,42 @@ const environmentMapTexture = cubeTextureLoader.load([
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
 
+// material
+// const concreteMaterial = new CANNON.Material('concrete')
+// const plasticMaterial = new CANNON.Material('plastic')
+
+// const concreteContactMaterial = new CANNON.ContactMaterial(concreteMaterial, plasticMaterial, {
+//     friction: 0.1,
+//     restitution: 0.7
+// })
+// world.addContactMaterial(concreteContactMaterial)
+
+const defaultMaterial = new CANNON.Material('default')
+const defaultContactMaterial = new CANNON.ContactMaterial(defaultMaterial, defaultMaterial, {
+    friction: 0.1,
+    restitution: 0.7
+})
+// world.addContactMaterial(defaultContactMaterial)
+world.defaultContactMaterial = defaultContactMaterial
+
+// sphere
 const sphereShape = new CANNON.Sphere(0.5)
 const sphereBody = new CANNON.Body({
     mass: 1,
     position: new CANNON.Vec3(0, 3, 0),
-    shape: sphereShape
+    shape: sphereShape,
+    // material: concreteMaterial
+    material: defaultMaterial
 })
+sphereBody.applyLocalForce(new CANNON.Vec3(20, 0, 0), sphereBody.position)
 world.addBody(sphereBody)
 
 const floorShape = new CANNON.Plane()
 const floorBody = new CANNON.Body({
     mass: 0,
-    shape: floorShape
+    shape: floorShape,
+    // material: plasticMaterial
+    material: defaultMaterial
 })
 floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(-1, 0, 0), Math.PI * 0.5)
 world.addBody(floorBody)
@@ -163,6 +187,7 @@ const tick = () =>
     oldElapsedTime = elapsedTime
 
     // Update physics
+    sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
     world.step(1/ 60, deltaTime, 3)
 
     sphere.position.copy(sphereBody.position)
