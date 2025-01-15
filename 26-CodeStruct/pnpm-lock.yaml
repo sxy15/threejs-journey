@@ -8,6 +8,9 @@ dependencies:
   cannon:
     specifier: ^0.6.2
     version: 0.6.2
+  emittery:
+    specifier: ^1.0.3
+    version: 1.0.3
   gsap:
     specifier: 3.5.1
     version: 3.5.1
@@ -433,6 +436,11 @@ packages:
 
   /cannon@0.6.2:
     resolution: {integrity: sha512-n/7wWSXr8KOSvjad2x0fJHgpMepKjOKi+NdSnjfYyijoDBZnp4JQKgPcpv28jlXoWM+N9zVYU09J0A6Qxx+Y7w==}
+    dev: false
+
+  /emittery@1.0.3:
+    resolution: {integrity: sha512-tJdCJitoy2lrC2ldJcqN4vkqJ00lT+tOWNT1hBJjO/3FDMJa5TTIiYGCKGkn/WfCyOzUMObeohbVTj00fhiLiA==}
+    engines: {node: '>=14.16'}
     dev: false
 
   /esbuild@0.24.0:
